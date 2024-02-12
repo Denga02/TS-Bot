@@ -20,7 +20,7 @@ public class Connect extends Remote {
 
 
     public static void local(String botName) throws IOException {
-        JSONObject configJson = loadConfigFromJson("C:\\Users\\dbaum\\Documents\\TsBot_3\\src\\main\\java\\com\\example\\connect.json");
+        JSONObject configJson = loadConfigFromJson("C:\\Users\\dbaum\\Documents\\Teamspeak\\GIB\\config.json");
         String address = configJson.getJSONObject("localhost").getString("address");
 
         config.setHost(address);
