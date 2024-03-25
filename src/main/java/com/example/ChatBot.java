@@ -13,7 +13,6 @@ import java.io.*;
 public class ChatBot extends Remote {
     static Logger logger = LoggerFactory.getLogger(ChatBot.class);
     private static boolean RecognizedCommand = true;
-    private static final String FILE_PATH = "C:\\Users\\dbaum\\Documents\\Teamspeak\\GIB\\config.json";
 
     public static void handleMessages() {
         // Get our own client ID by running the "whoami" command
@@ -105,11 +104,11 @@ public class ChatBot extends Remote {
 
             private void printKevin() {
                 try {
-                    JSONObject jsonObject = readJSONObjectFromFile(FILE_PATH);
+                    JSONObject jsonObject = readJSONObjectFromFile(Main.FILE_PATH);
                     assert jsonObject != null;
                     int counterKevin = jsonObject.getJSONObject("counter").getInt("kevin");
                     jsonObject.getJSONObject("counter").put("kevin", counterKevin + 1);
-                    writeJSONObjectToFile(jsonObject, FILE_PATH);
+                    writeJSONObjectToFile(jsonObject, Main.FILE_PATH);
 
                     Main.api.sendChannelMessage(
                             "Kevin! Brünette mit fetten Hupen ist für dich unterwegs\n"
@@ -122,11 +121,11 @@ public class ChatBot extends Remote {
 
             private void printSteven() {
                 try {
-                    JSONObject jsonObject = readJSONObjectFromFile(FILE_PATH);
+                    JSONObject jsonObject = readJSONObjectFromFile(Main.FILE_PATH);
                     assert jsonObject != null;
                     int counterSteven = jsonObject.getJSONObject("counter").getInt("steven");
                     jsonObject.getJSONObject("counter").put("steven", counterSteven + 1);
-                    writeJSONObjectToFile(jsonObject, FILE_PATH);
+                    writeJSONObjectToFile(jsonObject, Main.FILE_PATH);
 
                     Main.api.sendChannelMessage(
                             "Abgelehnt!!\n" + "Du bist der " + (counterSteven + 1) + ". der fragt..."

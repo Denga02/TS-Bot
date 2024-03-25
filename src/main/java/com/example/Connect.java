@@ -19,11 +19,14 @@ public class Connect extends Remote {
     private static volatile int clientId;
 
 
-    public static void local(String botName) throws IOException {
-        JSONObject configJson = loadConfigFromJson("C:\\Users\\dbaum\\Documents\\Teamspeak\\GIB\\config.json");
-        String address = configJson.getJSONObject("localhost").getString("address");
+    public static void prod(String botName) throws IOException {
+        JSONObject configJson = loadConfigFromJson();
+        assert configJson != null;
+        String address = configJson.getJSONObject("gib").getString("address");
+        int querryPort = configJson.getJSONObject("gib").getInt("QueryPort");
 
         config.setHost(address);
+        config.setQueryPort(querryPort);
         config.setFloodRate(TS3Query.FloodRate.DEFAULT);
         config.setEnableCommunicationsLogging(true);
         config.setReconnectStrategy(ReconnectStrategy.exponentialBackoff());
@@ -46,15 +49,17 @@ public class Connect extends Remote {
         query.connect();
     }
     private static void stuffThatNeedsToRunEveryTimeTheQueryConnects (TS3Api api) throws IOException {
-        JSONObject configJson = loadConfigFromJson("C:\\Users\\dbaum\\Documents\\Teamspeak\\GIB\\config.json");
-        String username = configJson.getJSONObject("localhost").getJSONObject("Login").getString("Username");
-        String password = configJson.getJSONObject("localhost").getJSONObject("Login").getString("Password");
+        JSONObject configJson = loadConfigFromJson();
+        assert configJson != null;
+        String username = configJson.getJSONObject("gib").getJSONObject("Login").getString("Username");
+        String password = configJson.getJSONObject("gib").getJSONObject("Login").getString("Password");
+        int virtualServer = configJson.getJSONObject("gib").getInt("ForNetPlayerPort");
 
 
         // Logging in, selecting the virtual server, selecting a channel
         // and setting a nickname needs to be done every time we reconnect
         api.login(username, password);
-        api.selectVirtualServerById(1);
+        api.selectVirtualServerByPort(virtualServer);
         api.setNickname("Clanbot");
 
         // What events we listen to also resets
@@ -69,10 +74,10 @@ public class Connect extends Remote {
         logger.info("Bot connected");
 
     }
-    private static JSONObject loadConfigFromJson(String filePath) {
+    private static JSONObject loadConfigFromJson() {
         try {
             // Lade den Inhalt der JSON-Datei
-            String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
+            String fileContent = new String(Files.readAllBytes(Paths.get(Main.FILE_PATH)));
 
 
             // Erstelle ein JSON-Objekt aus dem Inhalt
