@@ -41,22 +41,22 @@ public class ChatBot extends Remote {
                             printSteven();
                             break;
                         case "!stefan":
-                            Main.api.sendChannelMessage("Bin mal essen!");
+                            api.sendChannelMessage("Bin mal essen!");
                             break;
                         case "!help":
                             printHelp(e.getInvokerId());
                             break;
                         case "!chief":
-                            Main.api.sendChannelMessage("Micha sagt: Wir haben CChieftain noch zuhause!!");
+                            api.sendChannelMessage("Micha sagt: Wir haben Chieftain noch zuhause!!");
                             break;
                         case "!danny":
-                            Main.api.sendChannelMessage("Dannnnnnny!!");
+                            api.sendChannelMessage("Dannnnnnny!!");
                             break;
                         case "!karsten":
-                            Main.api.sendChannelMessage("Kaaaarsten!!");
+                            api.sendChannelMessage("Kaaaarsten!!");
                             break;
                         case "!jonas":
-                            Main.api.sendChannelMessage("WAAAS!!");
+                            api.sendChannelMessage("WAAAS!!");
                             break;
                         case "!changelog":
                             printChangeLog(e.getInvokerId());
@@ -65,7 +65,8 @@ public class ChatBot extends Remote {
                             printOnline(e.getInvokerId());
                             break;
                         case "!supp":
-                            handleSupp();
+                            api.sendPrivateMessage(e.getInvokerId(), "Der Befehl macht noch nichts");
+                            //handleSupp();
                             break;
                         default:
                             api.sendPrivateMessage(e.getInvokerId(), "Falscher Befehl! Gebe !help ein, um alle Befehle einzusehen");
@@ -87,7 +88,8 @@ public class ChatBot extends Remote {
                         !help --> gibt eine Übersicht aller Befehle
                         !changelog --> übersicht, was im letzten update geändert wurde
                         !online --> zeigt wer alles online ist und in was für einem Raum sich dieser befindet
-                        !kevin | !steven | !stefan | !chief | !karsten | !jonas --> nutzen auf eigene Gefahr
+                        !supp --> hat noch keine Funktion
+                        !kevin | !steven | !stefan | !chief | !karsten | !jonas | !danny--> nutzen auf eigene Gefahr
                         """
                 );
             }
@@ -95,9 +97,8 @@ public class ChatBot extends Remote {
             private void printChangeLog(int id) {
                 api.sendPrivateMessage(id,
                         """
-                        Version 2.2
-                        rebuild support
-                        added config file for counter
+                        Version 3.0.1
+                        hauptsächlich refactoring und bug fixes
                         """
                 );
             }
@@ -110,7 +111,7 @@ public class ChatBot extends Remote {
                     jsonObject.getJSONObject("counter").put("kevin", counterKevin + 1);
                     writeJSONObjectToFile(jsonObject, Main.FILE_PATH);
 
-                    Main.api.sendChannelMessage(
+                    api.sendChannelMessage(
                             "Kevin! Brünette mit fetten Hupen ist für dich unterwegs\n"
                                     + "Kevin war wieder rallig! Zum " + (counterKevin + 1) + ". mal kam heute eine Nutte vorbei!"
                     );
@@ -127,7 +128,7 @@ public class ChatBot extends Remote {
                     jsonObject.getJSONObject("counter").put("steven", counterSteven + 1);
                     writeJSONObjectToFile(jsonObject, Main.FILE_PATH);
 
-                    Main.api.sendChannelMessage(
+                    api.sendChannelMessage(
                             "Abgelehnt!!\n" + "Du bist der " + (counterSteven + 1) + ". der fragt..."
                     );
                 } catch (IOException e) {
@@ -138,15 +139,15 @@ public class ChatBot extends Remote {
             private void printOnline(int id) {
                 for (Client c : Main.api.getClients()) {
                     if (!c.isServerQueryClient()) {
-                        Main.api.sendPrivateMessage(id,
+                        api.sendPrivateMessage(id,
                                 "User " + c.getNickname() + " is in channel "
-                                        + Main.getChannelNameById(c.getChannelId()));
+                                        + getChannelNameById(c.getChannelId()));
                     }
                 }
             }
 
             private void chatBotLogger(int invokerID, String command) {
-                logger.info("ChatBot: User " + Main.api.getClientInfo(invokerID).getNickname() + " activated " + command);
+                logger.info("ChatBot: User " + api.getClientInfo(invokerID).getNickname() + " activated " + command);
             }
 
             private void handleSupp() {

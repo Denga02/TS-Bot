@@ -16,7 +16,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Support extends Remote {
-    private static final String FILE_PATH = "C:\\Users\\dbaum\\Documents\\Teamspeak\\GIB\\config.json";
     static Logger logger = LoggerFactory.getLogger(Support.class);
 
     private static final String NO_ACTORS_ARE_ONLINE = "Zurzeit ist niemand vom Support online";
@@ -81,7 +80,7 @@ public class Support extends Remote {
     private static JSONObject loadConfigFromJson() {
         try {
             // load content of the Json-File
-            String fileContent = new String(Files.readAllBytes(Paths.get(FILE_PATH)));
+            String fileContent = new String(Files.readAllBytes(Paths.get(Main.FILE_PATH)));
 
             // create Json-Object of the content
             return new JSONObject(fileContent);

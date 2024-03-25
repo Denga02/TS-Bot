@@ -25,7 +25,7 @@ public class ClientConnect extends Remote {
         });
     }
     private static void SendMessage (Client client) {
-        api.sendPrivateMessage(client.getId(), "Willkommen [B]\\{client.getNickname()}[/B]!");
+        api.sendPrivateMessage(client.getId(), "Willkommen [B] " + client.getNickname() + "[/B]!");
         logger.info("ClientConncetion:" + client.getNickname() + "joined the server");
     }
 }
