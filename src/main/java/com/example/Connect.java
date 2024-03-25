@@ -33,11 +33,9 @@ public class Connect extends Remote {
                 try {
                     stuffThatNeedsToRunEveryTimeTheQueryConnects (api);
                 } catch (IOException e) {
-                    e.printStackTrace(); // oder andere geeignete Behandlung
+                    e.printStackTrace();
                 }
-
             }
-
             @Override
             public void onDisconnect(TS3Query ts3Query) {
 
