@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Random;
 
 
 public class Connect extends Remote {
@@ -19,7 +20,7 @@ public class Connect extends Remote {
     private static volatile int clientId;
 
 
-    public static void prod(String botName) throws IOException {
+    public static void prod() throws IOException {
         JSONObject configJson = loadConfigFromJson();
         assert configJson != null;
         String address = configJson.getJSONObject("gib").getString("address");
@@ -60,7 +61,7 @@ public class Connect extends Remote {
         // and setting a nickname needs to be done every time we reconnect
         api.login(username, password);
         api.selectVirtualServerByPort(virtualServer);
-        api.setNickname("Clanbot");
+        api.setNickname(CreateNickname("GIB_Bot"));
 
         // What events we listen to also resets
         api.registerEvent(TS3EventType.TEXT_CHANNEL, 0);
@@ -86,6 +87,15 @@ public class Connect extends Remote {
             e.printStackTrace(); // oder andere geeignete Behandlung
             return null; // oder einen Standardwert zurückgeben
         }
+    }
+
+    private static String CreateNickname(String Botname) {
+        //random a number because of reconnection issues
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(100) + 1;
+        String nickname = "Clanbot" + randomNumber;
+
+        return nickname;
     }
 
 }

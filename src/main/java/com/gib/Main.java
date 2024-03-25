@@ -4,11 +4,12 @@ import java.io.IOException;
 
 public class Main extends Remote{
 
-    public static final String FILE_PATH = "/opt/ts_bot/json_files/config.json";
+    public static final String FILE_PATH = "D:\\dbaum\\Documents\\Wot_Clan\\config.json";
+    //public static final String FILE_PATH = "/opt/ts_bot/json_files/config.json";
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        Connect.prod("ClanBot");
+        Connect.prod();
         api = query.getApi();
 
         Monitoring.baseMonitoring();
