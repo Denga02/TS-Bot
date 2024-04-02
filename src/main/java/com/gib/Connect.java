@@ -65,7 +65,8 @@ public class Connect extends Remote {
 
         // What events we listen to also resets
         api.registerEvent(TS3EventType.TEXT_CHANNEL, 0);
-        api.registerEvent(TS3EventType.TEXT_PRIVATE);
+        api.registerEvent(TS3EventType.TEXT_PRIVATE, 0);
+        api.registerEvent(TS3EventType.SERVER, 0);
 
         // Out clientID changes every time we connect and we need it
         // for our event listener, so we need to store the ID in a field

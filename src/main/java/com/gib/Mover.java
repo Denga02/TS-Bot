@@ -15,11 +15,13 @@ public class Mover extends Remote{
         final int TIMER_DELAY_MS = 1000;
         final int TIMER_PERIOD_MS = 40 * 1000;
 
+        final int[] ignoreRooms = {13939583, 14775222, 14775225, 13939059};
+
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                List<Client> clients = Main.api.getClients();
+                List<Client> clients = api.getClients();
                 for (Client client : clients) {
                     if (!client.isServerQueryClient()) {
 
@@ -33,31 +35,45 @@ public class Mover extends Remote{
                         switch (config_number) {
                             // specific room + mute
                             case 5 -> {
-                                if (isMuted && clientRoom != null && clientRoom.equals(targetRoom) && idleTime > maxIdleTime && !Objects.equals(clientRoom, moveRoom)) {
+                                if (specificRoomWithMute(isMuted, clientRoom, idleTime) && !inIgnoreRooms(clientRoom) && !Objects.equals(clientRoom, moveRoom)) {
                                     moveRoutine(client);
                                 }
                             }
                             // none room + mute
                             case 6 -> {
-                                if (idleTime > maxIdleTime * minutes && isMuted && !Objects.equals(clientRoom, moveRoom)) {
+                                if (idleTime > maxIdleTime * minutes && isMuted && !Objects.equals(clientRoom, moveRoom) && !inIgnoreRooms(clientRoom)) {
                                     moveRoutine(client);
                                 }
                             }
                             // specific room + no mute
                             case 8 -> {
-                                if (clientRoom != null && clientRoom.equals(targetRoom) && idleTime > maxIdleTime * minutes && !Objects.equals(clientRoom, moveRoom)) {
+                                if (clientRoom != null && clientRoom.equals(targetRoom) && idleTime > maxIdleTime * minutes && !Objects.equals(clientRoom, moveRoom) && !inIgnoreRooms(clientRoom)) {
                                     moveRoutine(client);
                                 }
                             }
                             // no room + no mute
                             case 9 -> {
-                                if (idleTime > maxIdleTime * minutes && !Objects.equals(clientRoom, moveRoom)) {
+                                if (idleTime > maxIdleTime * minutes && !Objects.equals(clientRoom, moveRoom) && !inIgnoreRooms(clientRoom)) {
                                     moveRoutine(client);
                                 }
                             }
                         }
                     }
                 }
+            }
+
+            boolean specificRoomWithMute (boolean isMuted, String clientRoom, long idleTime) {
+                return isMuted && clientRoom != null && clientRoom.equals(targetRoom) && idleTime > maxIdleTime;
+            }
+
+            boolean inIgnoreRooms(String clientRoom) {
+
+                for (int i : ignoreRooms) {
+                    if (Objects.equals(getChannelNameById(i), clientRoom)) {
+                        return true;
+                    }
+                }
+                return false;
             }
             private int convert_config_to_number(){
                 int number = 0;
@@ -77,12 +93,12 @@ public class Mover extends Remote{
 
             private void moveClientToRoom(Client client, String moveRoom) {
                 int clientId = client.getId();
-                Main.api.moveClient(clientId, Main.api.getChannelByNameExact(moveRoom, false).getId());
+                api.moveClient(clientId, api.getChannelByNameExact(moveRoom, false).getId());
             }
 
             private void sendMoveMessage(int clientId, String room)
             {
-                Main.api.sendPrivateMessage(clientId, "Du warst zu lange Afk und wurdest in " + room + "gemoved");
+                api.sendPrivateMessage(clientId, "Du warst zu lange Afk und wurdest in " + room + "gemoved");
             }
 
             private void logClientMove(String nickname, String room)

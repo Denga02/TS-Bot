@@ -105,8 +105,7 @@ public class ChatBot extends Remote {
 
             private void printKevin() {
                 try {
-                    JSONObject jsonObject = readJSONObjectFromFile(Main.FILE_PATH);
-                    assert jsonObject != null;
+                    JSONObject jsonObject = readJSONObjectFromFile();
                     int counterKevin = jsonObject.getJSONObject("counter").getInt("kevin");
                     jsonObject.getJSONObject("counter").put("kevin", counterKevin + 1);
                     writeJSONObjectToFile(jsonObject, Main.FILE_PATH);
@@ -122,8 +121,7 @@ public class ChatBot extends Remote {
 
             private void printSteven() {
                 try {
-                    JSONObject jsonObject = readJSONObjectFromFile(Main.FILE_PATH);
-                    assert jsonObject != null;
+                    JSONObject jsonObject = readJSONObjectFromFile();
                     int counterSteven = jsonObject.getJSONObject("counter").getInt("steven");
                     jsonObject.getJSONObject("counter").put("steven", counterSteven + 1);
                     writeJSONObjectToFile(jsonObject, Main.FILE_PATH);
@@ -156,8 +154,8 @@ public class ChatBot extends Remote {
         });
     }
 
-    private static JSONObject readJSONObjectFromFile(String filePath) throws IOException {
-        File file = new File(filePath);
+    private static JSONObject readJSONObjectFromFile() throws IOException {
+        File file = new File(Main.FILE_PATH);
         if (!file.exists()) {
             // Wenn die Datei nicht existiert, erstellen wir ein neues JSON-Objekt mit Standardwerten
             JSONObject defaultJSONObject = new JSONObject();
@@ -167,7 +165,7 @@ public class ChatBot extends Remote {
             defaultJSONObject.put("counter", counterJSONObject);
 
             // Schreiben des Standard-JSON-Objekts in die Datei
-            try (FileWriter fileWriter = new FileWriter(filePath)) {
+            try (FileWriter fileWriter = new FileWriter(Main.FILE_PATH)) {
                 fileWriter.write(defaultJSONObject.toString());
             }
 
@@ -175,7 +173,7 @@ public class ChatBot extends Remote {
             return defaultJSONObject;
         } else {
             // Wenn die Datei existiert, lesen wir das JSON-Objekt aus der Datei und geben es zurück
-            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
+            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(Main.FILE_PATH))) {
                 StringBuilder stringBuilder = new StringBuilder();
                 String line;
                 while ((line = bufferedReader.readLine()) != null) {
