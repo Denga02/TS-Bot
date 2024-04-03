@@ -20,7 +20,7 @@ public class ClientConnect extends Remote {
                 SendMessage(client);
 
                 //Handle new User
-                Support.HandleNewUser();
+                Support.HandleNewUser(e);
             }
         });
     }

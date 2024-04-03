@@ -72,7 +72,7 @@ public class Connect extends Remote {
         // for our event listener, so we need to store the ID in a field
         clientId = api.whoAmI().getId();
 
-        MessageToAllClients("Bot is online", api);
+        //MessageToAllClients("Bot is online", api);
         logger.info("Bot connected");
 
     }

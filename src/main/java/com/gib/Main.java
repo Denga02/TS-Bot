@@ -22,6 +22,8 @@ public class Main extends Remote{
 
         ChatBot.handleMessages();
 
+        Support.HandleSupport();
+
 
     }
 }

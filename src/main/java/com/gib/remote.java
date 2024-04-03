@@ -67,7 +67,7 @@ abstract class Remote {
         }
         return false;
     }
-// specified
+
     public static void PokeClientsInSpecifiedChannelGroup(int groupId, String message, TS3Api api) {
         for (Client c : getClientsFromSpecificGroup(groupId, api)) {
             api.pokeClient(c.getId(), message);
